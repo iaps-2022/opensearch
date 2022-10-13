@@ -1,4 +1,9 @@
+x-dash-no-sec: &dash-no-sec
+  context: ./
+  dockerfile: ./Dockerfile
+
 version: '3'
+
 services:
   opensearch-node1:
     image: opensearchproject/opensearch:latest
@@ -48,7 +53,8 @@ services:
     networks:
       - opensearch-net
   opensearch-dashboards:
-    image: opensearch-dashboards-no-security
+    #image: opensearch-dashboards-no-security
+    build: *dash-no-sec
     container_name: opensearch-dashboards
     ports:
       - 5601:5601
@@ -61,8 +67,6 @@ services:
       OPENSEARCH_HOSTS: '["http://opensearch-node1:9200","http://opensearch-node2:9200"]'
     networks:
       - opensearch-net
-  opensearch-dashboards-dummy:
-    image: opensearchproject/opensearch-dashboards:latest
 
 volumes:
   opensearch-data1:
